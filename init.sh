@@ -6,7 +6,7 @@ sudo rm -rf /etc/nginx/sites-enabled/default
 sudo /etc/init.d/nginx restart
 
 # Gunicorn
-sudo ln -sf /home/box/web/etc/hello.py  /etc/gunicorn.d/hello.py
+sudo ln -sf /home/box/web/etc/gunicorn_config.py  /etc/gunicorn.d/config.py
 sudo /etc/init.d/gunicorn restart
 
 # MySQL

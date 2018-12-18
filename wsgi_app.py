@@ -1,6 +1,7 @@
 # WSGI app
 
 def app(environ, start_response):
+    body = '\n'.join(environ['QUERY_STRING'].split('&'))
 
     status = '200 OK'
     headers = [
@@ -8,5 +9,4 @@ def app(environ, start_response):
     ]
     start_response(status, headers)
 
-    body = environ['QUERY_STRING']
     return body
