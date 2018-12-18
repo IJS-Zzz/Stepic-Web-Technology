@@ -1,7 +1,7 @@
 # WSGI app
 
 def app(environ, start_response):
-    body = [(s + '\n').encode() for s in environ['QUERY_STRING'].split('&')]
+    body = [bytes(s + '\n', 'ascii') for s in environ['QUERY_STRING'].split('&')]
     
     status = '200 OK'
     headers = [
