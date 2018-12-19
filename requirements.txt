@@ -1,2 +1,2 @@
 django==1.10
-gunicon==15.5
+gunicon==17.5
