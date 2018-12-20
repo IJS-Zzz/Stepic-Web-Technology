@@ -7,12 +7,12 @@ from django.db import models
 
 class QuestionManager(models.Manager):
     def new(self):
-        # метод возвращающий последние добавленные вопросы
+        # returns last added questions
         # FIXME
         pass
 
     def popular(self):
-        # метод возвращающий вопросы отсортированные по рейтингу
+        # returns sorted questions on rating
         # FIXME
         pass
 
