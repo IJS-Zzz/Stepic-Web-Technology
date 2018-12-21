@@ -8,13 +8,12 @@ from django.db import models
 class QuestionManager(models.Manager):
     def new(self):
         # returns last added questions
-        # FIXME
-        pass
+        return super(QuestionManager, self).get_queryset().order_by('-added_at')
+        # return supet(QuestionManager, self).get_queryset().order_by('-pk')
 
     def popular(self):
         # returns sorted questions on rating
-        # FIXME
-        pass
+        return super(QuestionManager, self).get_queryset().order_by('-rating')
 
 
 class Question(models.Model):
@@ -23,12 +22,23 @@ class Question(models.Model):
     text = models.TextField()
     added_at = models.DateField(auto_now_add=True)  #, blank=True)
     rating = models.IntegerField(default=0)
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User)
 
+    def __unicode__(self):
+        return self.title
+
+    def __str__(self):
+        return self.title
 
 class Answer(models.Model):
     text = models.TextField()
     added_at = models.DateField(auto_now_add=True)  #, blank=True)
-    question = models.ForeignKey(Question)
-    author = models.ForeignKey(User)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.text[:30]
+
+    def __str__(self):
+        return self.title[:30]
