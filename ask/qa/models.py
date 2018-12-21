@@ -23,7 +23,7 @@ class Question(models.Model):
     added_at = models.DateField(auto_now_add=True)  #, blank=True)
     rating = models.IntegerField(default=0)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    likes = models.ManyToManyField(User)
+    likes = models.ManyToManyField(User, related_name="likes", related_query_name="like")
 
     def __unicode__(self):
         return self.title
