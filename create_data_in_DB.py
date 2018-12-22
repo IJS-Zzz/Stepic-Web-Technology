@@ -1,19 +1,16 @@
-def main():
-    import os
-    import sys
-    sys.path.append('/home/box/web/ask')
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'ask.settings'
-    import django
-    if hasattr(django, 'setup'):
-        django.setup()
-    
-    from django.contrib.auth.models import User
-    from django.db.models import Max
-    from django.utils import timezone
-    
-    import time
+import os
+import sys
+sys.path.append('/home/box/web/ask')
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ask.settings'
+import django
+if hasattr(django, 'setup'):
+    django.setup()
 
-    create_data_in_DB()
+from django.contrib.auth.models import User
+from django.db.models import Max
+from django.utils import timezone
+
+import time
 
 
 def create_data_in_DB():
@@ -39,4 +36,4 @@ def create_data_in_DB():
         answer = Answer.objects.create(text='answer ' + str(i), question=question, author=user)
 
 if __name__ == "__main__":
-    main()
+    create_data_in_DB()
