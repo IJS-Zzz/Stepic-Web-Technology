@@ -8,5 +8,5 @@ urlpatterns = [
     # url(r'^$', test),
     url(r'^$', views.new_questions, name='new'),
     url(r'^popular/$', views.popular_questions, name='popular'),
-    url(r'^question/(?P<num>\d+)/$', views.test),
+    url(r'^question/(?P<id>\d+)/$', views.question, name='question'),
 ]

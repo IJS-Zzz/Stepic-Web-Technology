@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}ASK{% endblock %}</title>
+  </head>
+  <body>
+    <!-- Загрузка шаблона header -->
+    {% include "ask/includes/header.html" %}
+
+    {% block content %}{% endblock %}
+
+    <!-- Загрузка шаблона footer -->
+    {% include "ask/includes/footer.html" %}
+  </body>
+</html>
