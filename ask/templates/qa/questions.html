@@ -1,0 +1,31 @@
+{% extends "qa/base.html" %}
+
+{% block content %}
+  <div class="mt-3">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% for p in paginator.page_range %}
+          {% if p == page.number %}
+            <li class="page-item active">
+          {% else %}
+            <li class="page-item">
+          {% endif %}
+            <a class="page-link" href="{{ paginator.baseurl }}{{ p }}">{{ p }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <main>
+      <h2>{{ page_title }}</h2>
+      {% for q in questions %}
+        <div class="card m-2">
+          <a class="card-body" href="{{ q.get_absolute_url }}">
+            <h4>{{ q.title }}</h4>
+            <p>{{ q.text }}</p>
+          </a>
+        </div>
+      {% endfor %}
+    </main>
+  </div>
+{% endblock %}

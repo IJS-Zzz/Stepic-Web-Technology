@@ -3,14 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>{% block title %}ASK{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   </head>
   <body>
-    <!-- Загрузка шаблона header -->
-    {% include "ask/includes/header.html" %}
+    <div class="container">
+      <!-- Загрузка шаблона header -->
+      {% include "qa/includes/header.html" %}
 
-    {% block content %}{% endblock %}
+      {% block content %}{% endblock %}
 
-    <!-- Загрузка шаблона footer -->
-    {% include "ask/includes/footer.html" %}
+      <!-- Загрузка шаблона footer -->
+      {% include "qa/includes/footer.html" %}
+    </div>
   </body>
 </html>

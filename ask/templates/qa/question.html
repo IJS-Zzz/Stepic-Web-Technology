@@ -1,5 +1,30 @@
 {% extends "qa/base.html" %}
 
 {% block content %}
-    Question
+  <nav class="m-2">
+    <ul>
+      <li><a href="{% url 'qa:new' %}">New Question</a></li>
+    </ul>
+  </nav>
+
+  <div class="mt-3">
+    <div class="card m-2">
+        <div class="card-body">
+          <h4>{{ question.title }}</h4>
+          <p>{{ question.text }}</p>
+        </div>
+    </div>
+    {% if answers %}
+      <h6>Answers:</h6>
+      {% for a in answers %}
+        <div class="card m-2">
+          <div class="card-body">
+            <h6>{{ a.author }}</h4>
+            <p>{{ a.text }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+  </div>
 {% endblock %}

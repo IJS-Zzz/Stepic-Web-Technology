@@ -64,7 +64,7 @@ class Question(models.Model):
 
     # Need Test!
     def get_absolute_url(self):
-        return reverse('qa.views.question', args=[str(self.id)])
+        return reverse('qa:question', args=[str(self.id)])
 
 
 class Answer(models.Model):

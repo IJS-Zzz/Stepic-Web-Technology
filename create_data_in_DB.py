@@ -1,6 +1,12 @@
 import os
 import sys
 sys.path.append('/home/box/web/ask')
+
+
+# !!!!!!!
+# sys.path.append('/Users/smurov/Dropbox/web/Python/Stepic/stepic_project/Stepic-Web-Technology/ask')
+
+
 os.environ['DJANGO_SETTINGS_MODULE'] = 'ask.settings'
 import django
 if hasattr(django, 'setup'):

@@ -26,9 +26,10 @@ def new_questions(request):
     except ValueError:
         raise Http404
     paginator = Paginator(questions, limit)
-    paginator.baseurl = reverse('qa.views.new_questions') + '?page='
+    paginator.baseurl = reverse('qa:new') + '?page='
     page = paginator.page(page)
-    return render(request, 'qa/new_questions.html', {
+    return render(request, 'qa/questions.html', {
+        'page_title': "New Questions",
         'questions': page.object_list,
         'paginator': paginator,
         'page': page,
@@ -54,9 +55,10 @@ def popular_questions(request):
     except ValueError:
         raise Http404
     paginator = Paginator(questions, limit)
-    paginator.baseurl = reverse('qa.views.popular_questions') + '?page='
+    paginator.baseurl = reverse('qa:popular') + '?page='
     page = paginator.page(page)
-    return render(request, 'qa/popular_questions.html', {
+    return render(request, 'qa/questions.html', {
+        'page_title': "Popular Questions",
         'questions': page.object_list,
         'paginator': paginator,
         'page': page,
