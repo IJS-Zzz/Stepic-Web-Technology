@@ -43,7 +43,7 @@ class QuestionManager(models.Manager):
     def main(self, since=None, limit=10):
         qs = self.order_by('-id')
         if since is not None:
-            qs = qs.filter('id__lt'=since)
+            qs = qs.filter(id__lt=id)
         return qs[:1000]
 
 
