@@ -13,9 +13,9 @@ def new_questions(request, *args, **kwargs):
 
 def popular_questions(request, *args, **kwargs):
     #print(*args, **kwargs)
-    return HttpResponse('Popular Questions - OK')
+    return HttpResponse('Popular Questions - OK\n')
 
 
 def question(request, *args, **kwargs):
     #print(*args, **kwargs)
-    return HttpResponse('Question - OK')
+    return HttpResponse('Question - OK\n')
