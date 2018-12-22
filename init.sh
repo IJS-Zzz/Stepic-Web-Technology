@@ -19,7 +19,11 @@ sudo /etc/init.d/gunicorn restart
 # MySQL
 sudo /etc/init.d/mysql start
 
-# config DB for work with django
+# Config DB for work with django
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS stepik CHARACTER SET utf8"
 mysql -u root -e "CREATE USER 'django'@'localhost' IDENTIFIED BY 'stepik'"
 mysql -u root -e "GRANT ALL ON stepik.* TO 'django'@'localhost' IDENTIFIED BY 'stepik'"
+
+# Create django models in DB
+# python /home/box/web/ask/manage.py makemigrations
+# python /home/box/web/ask/manage.py migrate

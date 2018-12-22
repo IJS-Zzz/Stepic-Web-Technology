@@ -1,11 +1,12 @@
 from django.conf.urls import url
 
-from views import test
-
+from . import views
 
 app_name = 'qa'
 
 urlpatterns = [
     # url(r'^$', test),
-    url(r'^(?P<num>\d+)/$', test),
+    url(r'^$', views.new_questions, name='new'),
+    url(r'^popular/$', views.popular_questions, name='popular'),
+    url(r'^question/(?P<num>\d+)/$', views.test),
 ]
