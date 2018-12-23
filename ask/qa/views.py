@@ -1,10 +1,12 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_GET
 from django.urls import reverse
 
+from django.contrib.auth.models import User
 from models import Answer, Question
+from forms import AskForm, AnswerForm
 
 
 def test(request, *args, **kwargs):
@@ -28,17 +30,12 @@ def new_questions(request):
     paginator = Paginator(questions, limit)
     paginator.baseurl = reverse('qa:new') + '?page='
     page = paginator.page(page)
-    return render(request, 'qa/questions.html', {
+    return render(request, 'qa/questions_list.html', {
         'page_title': "New Questions",
         'questions': page.object_list,
         'paginator': paginator,
         'page': page,
     })
-
-    # questions = Question.paginate(request, Question.objects.new())
-    # return render(request, 'qa/new_questions.html', {
-    #     'questions': question,
-    # })
 
 
 @require_GET
@@ -57,27 +54,54 @@ def popular_questions(request):
     paginator = Paginator(questions, limit)
     paginator.baseurl = reverse('qa:popular') + '?page='
     page = paginator.page(page)
-    return render(request, 'qa/questions.html', {
+    return render(request, 'qa/questions_list.html', {
         'page_title': "Popular Questions",
         'questions': page.object_list,
         'paginator': paginator,
         'page': page,
     })
 
-    # questions = Question.paginate(request, Question.objects.popular())
-    # return render(request, 'qa/popular_questions.html', {
-    #     'questions': question,
-    # })
+
+def ask(request):
+    #### Test
+    user_r = User.objects.first()
+    user = request.user
+
+    if request.method == "POST":
+        # form = AskForm(request.POST, user=user_r)
+        form = AskForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            url = question.get_absolute_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AskForm()
+        # form = AskForm(user=user_r)
+    return render(request, 'qa/ask.html', {
+        'form': form,
+    })
 
 
-@require_GET
 def question(request, id):
     question = get_object_or_404(Question, id=id)
+    if request.method == "POST":
+        # request.POST['question'] = id
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            new_answer = form.save()
+            new_answer.author = User.objects.first()
+            new_answer.question = question
+            new_answer.save()
+            form_posted = True
+            return HttpResponseRedirect(question.get_absolute_url())
+    else:
+        form = AnswerForm()
     try:
-        answers = question.answer_set.all()
+        answers = question.answer_set.order_by('-id').all()
     except Answer.DoesNotExist:  # Need Test!
         answers = None
     return render(request, 'qa/question.html', {
         'question': question,
         'answers': answers,
+        'form': form,
     })

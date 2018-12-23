@@ -29,9 +29,6 @@ class QuestionManager(models.Manager):
             page = int(request.GET.get('page', 1))
         except ValueError:
             raise Http404
-
-        # ! Paginator.baseurl !!!!!
-
         paginator = Paginator(qs, limit)
         try:
             page = paginator.page(page)
@@ -62,7 +59,6 @@ class Question(models.Model):
     def __str__(self):
         return self.title
 
-    # Need Test!
     def get_absolute_url(self):
         return reverse('qa:question', args=[str(self.id)])
 

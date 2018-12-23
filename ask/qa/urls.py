@@ -8,5 +8,6 @@ urlpatterns = [
     # url(r'^$', test),
     url(r'^$', views.new_questions, name='new'),
     url(r'^popular/$', views.popular_questions, name='popular'),
+    url(r'^ask/$', views.ask, name='ask'),
     url(r'^question/(?P<id>\d+)/$', views.question, name='question'),
 ]

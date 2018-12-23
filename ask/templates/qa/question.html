@@ -1,12 +1,12 @@
 {% extends "qa/base.html" %}
 
 {% block content %}
-  <nav class="m-2">
-    <ul>
-      <li><a href="{% url 'qa:new' %}">New Question</a></li>
-    </ul>
-  </nav>
-
+  {% for e in form.non_field_errors %}
+    <div class="alert alert-danger">{{ e }}</div>
+  {% endfor %}
+  {% if form_posted %}
+    <div class="alert alert-success">Well Done! Answer added!</div>
+  {% endif %}
   <div class="mt-3">
     <div class="card m-2">
         <div class="card-body">
@@ -14,6 +14,19 @@
           <p>{{ question.text }}</p>
         </div>
     </div>
+    
+    <form method="post" action="" autocomplete="off">
+      {% csrf_token %}
+      <input type="hidden" name="question" value="{{ question.id }}">
+      {{ form.question.errors }}
+
+      <label for="{{ form.text.id_for_label }}">Your answer:</label>
+      {{ form.text }}
+      {{ form.text.errors }}
+
+      <button class="btn btn-primary" type="submit">Submit form</button>
+    </form>
+
     {% if answers %}
       <h6>Answers:</h6>
       {% for a in answers %}
