@@ -5,7 +5,7 @@ from models import Answer, Question
 
 class AskForm(forms.Form):
     title = forms.CharField(max_length=255)
-    text = forms.CharField()
+    text = forms.CharField(widget=forms.Textarea)
 
     def clean_title(self):
         if self.cleaned_data['title'] in [q['title'] for q in Question.objects.values('title').distinct().all()]:
@@ -16,16 +16,34 @@ class AskForm(forms.Form):
         return self.cleaned_data['title']
 
     def save(self):
-        user = User.objects.first()
-        return Question.objects.create(author=user, **self.cleaned_data)
+        question = Question(**self.cleaned_data)
+        question.author_id = self._user.id
+        question.save()
+        return question
+
+        # user = User.objects.first()
+        # return Question.objects.create(author=user, **self.cleaned_data)
 
 
 class AnswerForm(forms.Form):
-    text = forms.CharField()
-    question = forms.IntegerField()
+    text = forms.CharField(widget=forms.Textarea)
+    question = forms.IntegerField(widget=forms.HiddenInput)
 
-    # def clean(self):
-    #     pass
+    def clean_question(self):
+        question_id = self.cleaned_data['question']
+        try:
+            question = Question.objects.get(id=question_id)
+        except Question.DoesNotExist:
+            raise forms.ValidationError(
+                "Something's is going wrong! ",
+                code='wrong question id',
+            )
+        return question
 
     def save(self):
-        return Answer(text=self.cleaned_data['text'])
+        answer = Answer(**self.cleaned_data)
+        answer.author_id = self._user.id
+        answer.save()
+        return answer
+
+        # return Answer(text=self.cleaned_data['text'])

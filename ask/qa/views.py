@@ -63,45 +63,37 @@ def popular_questions(request):
 
 
 def ask(request):
-    #### Test
-    user_r = User.objects.first()
-    user = request.user
+    user = User.objects.first()
 
     if request.method == "POST":
-        # form = AskForm(request.POST, user=user_r)
         form = AskForm(request.POST)
         if form.is_valid():
+            form._user = user
             question = form.save()
             url = question.get_absolute_url()
             return HttpResponseRedirect(url)
     else:
         form = AskForm()
-        # form = AskForm(user=user_r)
-    return render(request, 'qa/ask.html', {
-        'form': form,
-    })
+
+    return render(request, 'qa/ask.html', {'form': form,
+                                           'user': request.user,
+                                           'session': request.session, })
 
 
 def question(request, id):
+    user = User.objects.first()
+
     question = get_object_or_404(Question, id=id)
     if request.method == "POST":
-        # request.POST['question'] = id
         form = AnswerForm(request.POST)
         if form.is_valid():
-            new_answer = form.save()
-            new_answer.author = User.objects.first()
-            new_answer.question = question
-            new_answer.save()
-            form_posted = True
+            form._user = user
+            form.save()
             return HttpResponseRedirect(question.get_absolute_url())
     else:
-        form = AnswerForm()
-    try:
-        answers = question.answer_set.order_by('-id').all()
-    except Answer.DoesNotExist:  # Need Test!
-        answers = None
-    return render(request, 'qa/question.html', {
-        'question': question,
-        'answers': answers,
-        'form': form,
-    })
+        form = AnswerForm(initial={'question': question.id})
+
+    return render(request, 'qa/question.html', {'question': question,
+                                                'form': form,
+                                                'user': request.user,
+                                                'session': request.session, })

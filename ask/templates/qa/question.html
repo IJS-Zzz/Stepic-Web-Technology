@@ -1,7 +1,31 @@
 {% extends "qa/base.html" %}
 
 {% block content %}
-  {% for e in form.non_field_errors %}
+  <h1>{{ question }}</h1>
+  <div>{{ question.text }}, {{ question.author_id }}</div>
+  <hr>
+  <ul>
+  {% for answer in question.answer_set.all %}
+      <li>{{ answer }}, {{ answer.author_id }}</li>
+  {% endfor %}
+  </ul>
+  <hr>
+  <form method="post" action="{{ question.get_absolute_url }}" autocomplete="off">
+    <fieldset>
+      {% csrf_token %}
+      {{ form.as_p }}
+    </fieldset>
+    <button type="submit">Ответить</button>
+  </form>
+  <hr>
+  <div><a href="{% url 'qa:ask'%}">Ask a new question</a></div>
+  <div>User: {{ user }}</div>
+  <div>Session: {{ session }}</div>
+  <div><a href="{% url 'qa:new'%}">Return to main page</a></div>
+{% endblock %}
+
+
+<!--   {% for e in form.non_field_errors %}
     <div class="alert alert-danger">{{ e }}</div>
   {% endfor %}
   {% if form_posted %}
@@ -21,8 +45,8 @@
       {{ form.question.errors }}
 
       <label for="{{ form.text.id_for_label }}">Your answer:</label>
-      {{ form.text }}
-      {{ form.text.errors }}
+      <div>{{ form.text }}</div>
+      <div>{{ form.text.errors }}</div>
 
       <button class="btn btn-primary" type="submit">Submit form</button>
     </form>
@@ -39,5 +63,4 @@
       {% endfor %}
     {% endif %}
 
-  </div>
-{% endblock %}
+  </div> -->

@@ -1,20 +1,33 @@
 {% extends "qa/base.html" %}
 
 {% block content %}
-  {% for e in form.non_field_errors %}
+  <form method="post" action="{% url 'qa:ask'%}" autocomplete="off">
+    <fieldset>
+      {% csrf_token %}
+      {{ form.as_p }}
+    </fieldset>
+    <button type="submit">Сохранить</button>
+  </form>
+  <div>User: {{ user }}</div>
+  <div>Session: {{ session }}</div>
+  <div><a href="{% url 'qa:new'%}">Return to main page</a></div>
+{% endblock %}
+
+
+
+<!--   {% for e in form.non_field_errors %}
     <div class="alert alert-danger">{{ e }}</div>
   {% endfor %}
   <form method="post" action="{% url 'qa:ask'%}" autocomplete="off">
     {% csrf_token %}
     <fieldset>
       {% for field in form %}
-        <div class="form-group
-          {% if field.errors %} has-error {% endif %}">
+        <div>
           <label>{{ field.label }}</label>
-          <div class="form-control">{{ field }}</div>
+          <div>{{ field }}</div>
+          <div>{{ field.errors }}</div>
         </div>
       {% endfor %}
     </fieldset>
     <button class="btn btn-primary" type="submit">Submit form</button>
-  </form>
-{% endblock %}
+  </form> -->
