@@ -3,10 +3,12 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_GET
 from django.urls import reverse
-
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
+
 from models import Answer, Question
-from forms import AskForm, AnswerForm
+from forms import AskForm, AnswerForm, SignupForm, LoginForm
 
 
 def test(request, *args, **kwargs):
@@ -63,7 +65,10 @@ def popular_questions(request):
 
 
 def ask(request):
-    user = User.objects.first()
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        user = User.objects.first()
 
     if request.method == "POST":
         form = AskForm(request.POST)
@@ -81,7 +86,10 @@ def ask(request):
 
 
 def question(request, id):
-    user = User.objects.first()
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        user = User.objects.first()
 
     question = get_object_or_404(Question, id=id)
     if request.method == "POST":
@@ -97,3 +105,53 @@ def question(request, id):
                                                 'form': form,
                                                 'user': request.user,
                                                 'session': request.session, })
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user and user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+    else:
+        form = LoginForm()
+    return render(request, 'qa/login.html', {'form': form,
+                                            'user': request.user,
+                                            'session': request.session, })
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('login'))
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data['username']
+            password = form.raw_password
+            user = authenticate(username=username, password=password)
+            if user and user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+    else:
+        form = SignupForm()
+
+    return render(request, 'qa/signup.html', {'form': form,
+                                           'user': request.user,
+                                           'session': request.session, })
+
+
+
+
+
+
+
+
+
