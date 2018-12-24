@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ask.middleware.MyTestMiddleware',  # My Test Middleware (add costom cookie in response)
 ]
 
 ROOT_URLCONF = 'ask.urls'
